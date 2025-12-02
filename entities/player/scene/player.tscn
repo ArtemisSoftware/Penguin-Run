@@ -115,6 +115,7 @@ height = 16.0
 script = ExtResource("1_8xc6n")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_tpjdx")
 animation = &"jump"
 autoplay = "idle"
