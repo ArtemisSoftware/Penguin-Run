@@ -1,0 +1,64 @@
+[gd_resource type="TileSet" load_steps=9 format=3 uid="uid://bp1gn344323te"]
+
+[ext_resource type="Texture2D" uid="uid://kjqayccg481l" path="res://world/sprites/grassland/Grassland_entities (16 x 16).png" id="1_677w6"]
+[ext_resource type="Texture2D" uid="uid://dftealdojrjtb" path="res://world/sprites/misc/Flowers (16 x 16).png" id="2_uq3e4"]
+[ext_resource type="Texture2D" uid="uid://3svpxlhbii1q" path="res://world/sprites/misc/House (112 x 96).png" id="3_g00t0"]
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_qlbgo"]
+tile_data = PackedInt32Array(65536, 1, 0, 65537, 655360, 5, 65538, 720896, 5, 65539, 720896, 5, 65540, 720896, 5, 5, 65536, 1)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_ljald"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_d1mle"]
+texture = ExtResource("1_677w6")
+15:2/0 = 0
+16:2/0 = 0
+17:2/0 = 0
+14:4/0 = 0
+15:4/0 = 0
+16:4/0 = 0
+17:4/0 = 0
+18:4/0 = 0
+1:5/0 = 0
+1:5/0/z_index = 3
+3:5/0 = 0
+5:5/0 = 0
+6:5/0 = 0
+7:5/0 = 0
+9:5/0 = 0
+10:5/0 = 0
+11:5/0 = 0
+12:5/0 = 0
+14:5/0 = 0
+16:5/0 = 0
+18:5/0 = 0
+1:1/size_in_atlas = Vector2i(3, 3)
+1:1/0 = 0
+1:1/0/z_index = 2
+5:1/size_in_atlas = Vector2i(3, 3)
+5:1/0 = 0
+9:1/size_in_atlas = Vector2i(3, 3)
+9:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cm0t0"]
+texture = ExtResource("2_uq3e4")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l37vo"]
+texture = ExtResource("3_g00t0")
+0:0/size_in_atlas = Vector2i(7, 6)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, 8)
+8:0/size_in_atlas = Vector2i(7, 6)
+8:0/0 = 0
+8:0/0/texture_origin = Vector2i(0, 8)
+
+[resource]
+sources/0 = SubResource("TileSetAtlasSource_d1mle")
+sources/1 = SubResource("TileSetAtlasSource_cm0t0")
+sources/2 = SubResource("TileSetAtlasSource_l37vo")
+pattern_0 = SubResource("TileMapPattern_qlbgo")
+pattern_1 = SubResource("TileMapPattern_ljald")
