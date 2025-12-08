@@ -25,45 +25,63 @@ motion_scale = Vector2(0.1, 0.1)
 motion_mirroring = Vector2(288, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer - 6 Distant trees"]
+texture_repeat = 2
 texture = ExtResource("3_vdq2s")
 centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 576, 208)
 
 [node name="ParallaxLayer - 5 Tree row" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.2, 0.2)
 motion_mirroring = Vector2(288, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer - 5 Tree row"]
+texture_repeat = 2
 texture = ExtResource("4_4o77n")
 centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 576, 208)
 
 [node name="ParallaxLayer - 4 Tree row" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.3, 0.3)
 motion_mirroring = Vector2(288, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer - 4 Tree row"]
+texture_repeat = 2
 texture = ExtResource("5_s26ds")
 centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 576, 208)
 
 [node name="ParallaxLayer - 3 Bottom leaf piles" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.4, 0.4)
 motion_mirroring = Vector2(288, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer - 3 Bottom leaf piles"]
+texture_repeat = 2
 texture = ExtResource("6_40vnh")
 centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 576, 208)
 
 [node name="ParallaxLayer - 2 Trees" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.5, 0.5)
 motion_mirroring = Vector2(288, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer - 2 Trees"]
+texture_repeat = 2
 texture = ExtResource("7_ppcon")
 centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 576, 208)
 
 [node name="ParallaxLayer - 1 Leaf top" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(1.5, 1.5)
 motion_mirroring = Vector2(288, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer - 1 Leaf top"]
+texture_repeat = 2
 texture = ExtResource("8_o7hvc")
 centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 576, 208)
