@@ -248,6 +248,7 @@ texture = ExtResource("3_bg6pq")
 
 [resource]
 physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 6
 sources/0 = SubResource("TileSetAtlasSource_6ovqv")
 sources/1 = SubResource("TileSetAtlasSource_f6f7u")
 sources/2 = SubResource("TileSetAtlasSource_7f18w")
