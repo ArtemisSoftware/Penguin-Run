@@ -77,9 +77,6 @@ tile_set = SubResource("TileSet_o7hvc")
 tile_map_data = PackedByteArray("AAAbAAoAAQABAAAAAAAcAAoAAQACAAAAAAAdAAoAAQADAAAAAAAtAAsAAAADAAUAAAA=")
 tile_set = ExtResource("3_ppcon")
 
-[node name="Player" parent="." instance=ExtResource("2_k08ah")]
-position = Vector2(85, 140)
-
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
 [node name="ParallaxLayer - 6 Distant trees" type="ParallaxLayer" parent="ParallaxBackground"]
@@ -148,12 +145,16 @@ centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 576, 208)
 
+[node name="Player" parent="." instance=ExtResource("2_k08ah")]
+position = Vector2(51, 184)
+
 [node name="Camera" parent="." instance=ExtResource("9_s26ds")]
 limit_top = 0
 limit_right = 750
 
 [node name="LevelEnd" parent="." instance=ExtResource("12_o7hvc")]
-position = Vector2(750, 182)
+position = Vector2(766, 182)
+next_level = "tropic"
 
 [node name="CollisionShape2D" parent="LevelEnd" index="0"]
 position = Vector2(0, -43)

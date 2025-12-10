@@ -93,14 +93,15 @@ autoplay = "default"
 centered = false
 
 [node name="Player" parent="." instance=ExtResource("1_yprh5")]
-position = Vector2(47, 117)
+position = Vector2(39, 168)
 
 [node name="Camera" parent="." instance=ExtResource("9_rpdik")]
-position = Vector2(-2, 0)
+position = Vector2(-7, 113)
 limit_right = 710
 
 [node name="LevelEnd" parent="." instance=ExtResource("10_48ntt")]
-position = Vector2(717, 166)
+position = Vector2(726, 166)
+next_level = "forest"
 
 [node name="CollisionShape2D" parent="LevelEnd" index="0"]
 position = Vector2(0, -40)
