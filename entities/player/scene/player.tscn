@@ -111,7 +111,7 @@ animations = [{
 radius = 7.0
 height = 16.0
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
 script = ExtResource("1_8xc6n")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -122,8 +122,3 @@ autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_8sbyw")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-limit_left = 0
-limit_bottom = 200
-position_smoothing_enabled = true
