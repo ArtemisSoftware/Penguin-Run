@@ -1,9 +1,14 @@
-[gd_scene load_steps=19 format=3 uid="uid://dcologspv7oid"]
+[gd_scene load_steps=21 format=3 uid="uid://dcologspv7oid"]
 
 [ext_resource type="Script" uid="uid://cfmynkew7ijrl" path="res://entities/player/script/player.gd" id="1_8xc6n"]
 [ext_resource type="Texture2D" uid="uid://d80s5be81qiu" path="res://entities/player/sprites/Idle (16 x 16).png" id="2_5gr5v"]
+[ext_resource type="Texture2D" uid="uid://8jcitexpnrdj" path="res://entities/player/sprites/Ducking (16 x 16).png" id="2_c8uo4"]
 [ext_resource type="Texture2D" uid="uid://ryigpo27xd74" path="res://entities/player/sprites/Waddling (16 x 16).png" id="3_apncy"]
 [ext_resource type="Texture2D" uid="uid://shfkr5jcc8ve" path="res://entities/player/sprites/Jump (16 x 16).png" id="3_qhr48"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i0l08"]
+atlas = ExtResource("2_c8uo4")
+region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_apncy"]
 atlas = ExtResource("2_5gr5v")
@@ -55,6 +60,14 @@ region = Rect2(80, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tpjdx"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i0l08")
+}],
+"loop": false,
+"name": &"duck",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_apncy")
@@ -119,7 +132,7 @@ script = ExtResource("1_8xc6n")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_tpjdx")
-animation = &"jump"
+animation = &"duck"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

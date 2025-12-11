@@ -8,7 +8,8 @@ const JUMP_VELOCITY = -300.0
 enum PlayerState {
 	idle,
 	walk,
-	jump
+	jump,
+	duck
 }
 
 var status: PlayerState
@@ -36,6 +37,8 @@ func _physics_process(delta: float) -> void:
 		PlayerState.jump:
 			jump_state()	
 			
+		PlayerState.duck:	
+			duck_state()				
 			
 	move_and_slide()			
 	pass	
@@ -73,6 +76,10 @@ func idle_state():
 	if velocity.x != 0:
 		go_to_walk_state()
 		return
+		
+	if Input.is_action_pressed("duck") and is_on_floor():
+		go_to_duck_state()
+		return		
 		
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		go_to_jump_state()
@@ -116,6 +123,20 @@ func jump_state():
 			go_to_walk_state()	
 		return
 	pass	
+
+func go_to_duck_state():
+	status = PlayerState.duck
+	animated_sprite_2d.play("duck")
+	pass
+
+func duck_state():
+	if Input.is_action_just_released("duck") and is_on_floor():
+		go_to_idle_state()
+		return
+		
+	pass	
+
+
 
 
 func flip(direction: float) -> void:
