@@ -3,6 +3,8 @@ extends CharacterBody2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 
+@export var max_jump_count = 2
+
 const SPEED = 80.0
 const JUMP_VELOCITY = -300.0
 
@@ -15,6 +17,8 @@ enum PlayerState {
 
 var direction = 0
 var status: PlayerState
+var jump_count = 2
+
 
 
 
@@ -52,7 +56,6 @@ func _physics_process(delta: float) -> void:
 	
 func move():
 	
-
 	flip()
 	
 	if direction:
@@ -60,7 +63,6 @@ func move():
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)		
 	
-
 	pass
 	
 
@@ -127,12 +129,17 @@ func go_to_jump_state():
 	status = PlayerState.jump
 	animated_sprite_2d.play("jump")
 	velocity.y = JUMP_VELOCITY
+	jump_count += 1
 	pass
 		
 func jump_state():
 	move()
 	
+	if Input.is_action_just_pressed("jump") && jump_count < max_jump_count:
+		go_to_jump_state()
+	
 	if is_on_floor():
+		jump_count = 0
 		if velocity.x == 0:
 			go_to_idle_state()
 		else:
