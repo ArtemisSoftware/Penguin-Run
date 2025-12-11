@@ -12,7 +12,8 @@ enum PlayerState {
 	idle,
 	walk,
 	jump,
-	duck
+	duck,
+	fall
 }
 
 var direction = 0
@@ -44,7 +45,10 @@ func _physics_process(delta: float) -> void:
 			jump_state()	
 			
 		PlayerState.duck:	
-			duck_state()				
+			duck_state()			
+			
+		PlayerState.fall:	
+			fall_state()						
 			
 	move_and_slide()			
 	pass	
@@ -77,7 +81,9 @@ func flip() -> void:
 	elif direction < 0:
 		animated_sprite_2d.flip_h = true	
 
-			
+func can_jump_again() -> bool:
+	return jump_count < max_jump_count	
+	pass		
 	
 #---------------------------
 #Movement - states
@@ -120,6 +126,11 @@ func walk_state():
 		
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		go_to_jump_state()
+		return	
+		
+	if not is_on_floor():
+		jump_count += 1
+		go_to_fall_state()	
 		return			
 	pass
 	
@@ -135,8 +146,27 @@ func go_to_jump_state():
 func jump_state():
 	move()
 	
-	if Input.is_action_just_pressed("jump") && jump_count < max_jump_count:
+	if Input.is_action_just_pressed("jump") && can_jump_again():
 		go_to_jump_state()
+		return
+		
+	if velocity.y > 0:
+		go_to_fall_state()
+		return	
+	
+	pass	
+	
+func go_to_fall_state():
+	status = PlayerState.fall
+	animated_sprite_2d.play("fall")
+	pass
+
+func fall_state():
+	move()
+	
+	if Input.is_action_just_pressed("jump") && can_jump_again():
+		go_to_jump_state()
+		return	
 	
 	if is_on_floor():
 		jump_count = 0
@@ -145,7 +175,11 @@ func jump_state():
 		else:
 			go_to_walk_state()	
 		return
-	pass	
+		
+
+			
+		
+	pass		
 
 func go_to_duck_state():
 	status = PlayerState.duck
@@ -162,6 +196,8 @@ func duck_state():
 		return
 		
 	pass	
+
+
 
 
 #---------------------------
