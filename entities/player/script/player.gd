@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 
 const SPEED = 80.0
 const JUMP_VELOCITY = -300.0
@@ -12,6 +13,7 @@ enum PlayerState {
 	duck
 }
 
+var direction = 0
 var status: PlayerState
 
 
@@ -50,16 +52,30 @@ func _physics_process(delta: float) -> void:
 	
 func move():
 	
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis("left", "right")
+
+	flip()
 	
 	if direction:
 		velocity.x = direction * SPEED
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)		
 	
-	flip(direction)
+
+	pass
+	
+
+func flip() -> void:
+	
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	direction = Input.get_axis("left", "right")	
+	
+	if direction > 0:
+		animated_sprite_2d.flip_h = false
+	elif direction < 0:
+		animated_sprite_2d.flip_h = true	
+
+			
 	
 #---------------------------
 #Movement - states
@@ -127,35 +143,45 @@ func jump_state():
 func go_to_duck_state():
 	status = PlayerState.duck
 	animated_sprite_2d.play("duck")
+	update_collision_state()
 	pass
 
 func duck_state():
+	flip()
+	
 	if Input.is_action_just_released("duck") and is_on_floor():
 		go_to_idle_state()
+		update_collision_state()
 		return
 		
 	pass	
 
 
+#---------------------------
+#Collisions
+#---------------------------	
+	
+func update_collision_state() -> void:
+	
+	match status:			
+		PlayerState.duck:	
+			update_collision(5, 10, 3)
+			
+		_:
+			update_collision(6, 16, 0)			
+	pass	
+	
+	
+func update_collision(radius, height, y) -> void:
+	collision_shape_2d.shape.radius = radius
+	collision_shape_2d.shape.height = height
+	collision_shape_2d.position.y = y
+	pass	
 
 
-func flip(direction: float) -> void:
-	if direction > 0:
-		animated_sprite_2d.flip_h = false
-		#animated_sprite_2d.play("walk")
-	elif direction < 0:
-		animated_sprite_2d.flip_h = true	
-		#animated_sprite_2d.play("walk")
-	else: 
-		print("")
-		#animated_sprite_2d.play("idle")
-		
 
 
-
-
-
-
+#------------------------------
 
 
 
@@ -179,7 +205,7 @@ func _physics_process_v1(delta: float) -> void:
 
 
 	if is_on_floor():
-		flip(direction)
+		flip()
 	else: 	animated_sprite_2d.play("jump")
 
 	move_and_slide()
