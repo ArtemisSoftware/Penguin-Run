@@ -7,6 +7,7 @@ extends CharacterBody2D
 @export var acceleration = 400
 @export var deceleration = 400
 @export var max_speed = 100.0
+@export var slide_deceleration = 100
 
 const JUMP_VELOCITY = -300.0
 
@@ -15,12 +16,13 @@ enum PlayerState {
 	walk,
 	jump,
 	duck,
-	fall
+	fall,
+	slide
 }
 
 var direction = 0
 var status: PlayerState
-var jump_count = 2
+var jump_count = 0
 
 
 
@@ -50,7 +52,10 @@ func _physics_process(delta: float) -> void:
 			duck_state()			
 			
 		PlayerState.fall:	
-			fall_state(delta)						
+			fall_state(delta)	
+			
+		PlayerState.slide:	
+			slide_state(delta)									
 			
 	move_and_slide()			
 	pass	
@@ -131,10 +136,16 @@ func walk_state(delta: float):
 		go_to_jump_state()
 		return	
 		
+	if Input.is_action_just_pressed("duck") and is_on_floor():	
+		go_to_slide_state()
+		return
+		
 	if not is_on_floor():
 		jump_count += 1 # one extra jump when falling
 		go_to_fall_state()	
-		return			
+		return		
+		
+			
 	pass
 	
 	
@@ -200,6 +211,25 @@ func duck_state():
 		
 	pass	
 
+func go_to_slide_state():
+	status = PlayerState.slide
+	animated_sprite_2d.play("slide")
+	update_collision_state()
+	pass
+
+func slide_state(delta: float):
+	velocity.x = move_toward(velocity.x, 0, slide_deceleration * delta)	
+	
+	if Input.is_action_just_released("duck") and is_on_floor():	
+		go_to_walk_state()
+		return
+		
+	if velocity.x == 0:
+		go_to_duck_state()
+		return
+		
+	pass	
+
 
 
 
@@ -210,9 +240,9 @@ func duck_state():
 func update_collision_state() -> void:
 	
 	match status:			
-		PlayerState.duck:	
+		PlayerState.duck, PlayerState.slide:	
 			update_collision(5, 10, 3)
-			
+				
 		_:
 			update_collision(6, 16, 0)			
 	pass	
@@ -232,27 +262,27 @@ func update_collision(radius, height, y) -> void:
 
 
 
-func _physics_process_v1(delta: float) -> void:
-	# Add the gravity.
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-
-	# Handle jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis("left", "right")
-	if direction:
-		velocity.x = direction * max_speed
-	else:
-		velocity.x = move_toward(velocity.x, 0, max_speed)
-
-
-	if is_on_floor():
-		flip()
-	else: 	animated_sprite_2d.play("jump")
-
-	move_and_slide()
-			
+#func _physics_process_v1(delta: float) -> void:
+	## Add the gravity.
+	#if not is_on_floor():
+		#velocity += get_gravity() * delta
+#
+	## Handle jump.
+	#if Input.is_action_just_pressed("jump") and is_on_floor():
+		#velocity.y = JUMP_VELOCITY
+#
+	## Get the input direction and handle the movement/deceleration.
+	## As good practice, you should replace UI actions with custom gameplay actions.
+	#var direction := Input.get_axis("left", "right")
+	#if direction:
+		#velocity.x = direction * max_speed
+	#else:
+		#velocity.x = move_toward(velocity.x, 0, max_speed)
+#
+#
+	#if is_on_floor():
+		#flip()
+	#else: 	animated_sprite_2d.play("jump")
+#
+	#move_and_slide()
+			#
