@@ -276,9 +276,11 @@ func update_collision(radius, height, y) -> void:
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	if velocity.y > 0:
 		#kill enemy
-		area.get_parent().queue_free()
+		#area.get_parent().queue_free()
+		area.get_parent().take_damage()
 		go_to_jump_state()
 	else:
+		#player dies
 		go_to_dead_state()	
 	pass # Replace with function body.
 
