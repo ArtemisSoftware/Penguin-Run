@@ -4,8 +4,10 @@ extends CharacterBody2D
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 
 @export var max_jump_count = 2
+@export var acceleration = 400
+@export var deceleration = 400
+@export var max_speed = 100.0
 
-const SPEED = 80.0
 const JUMP_VELOCITY = -300.0
 
 enum PlayerState {
@@ -36,19 +38,19 @@ func _physics_process(delta: float) -> void:
 	
 	match status:
 		PlayerState.idle:
-			idle_state()
+			idle_state(delta)
 			
 		PlayerState.walk:
-			walk_state()			
+			walk_state(delta)			
 	
 		PlayerState.jump:
-			jump_state()	
+			jump_state(delta)	
 			
 		PlayerState.duck:	
 			duck_state()			
 			
 		PlayerState.fall:	
-			fall_state()						
+			fall_state(delta)						
 			
 	move_and_slide()			
 	pass	
@@ -58,14 +60,15 @@ func _physics_process(delta: float) -> void:
 #Movement 
 #---------------------------		
 	
-func move():
+func move(delta: float):
 	
 	flip()
 	
 	if direction:
-		velocity.x = direction * SPEED
+		velocity.x = move_toward(velocity.x, direction * max_speed, acceleration * delta)	
+		#velocity.x = direction * SPEED
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)		
+		velocity.x = move_toward(velocity.x, 0, deceleration * delta)		
 	
 	pass
 	
@@ -94,8 +97,8 @@ func go_to_idle_state():
 	animated_sprite_2d.play("idle")
 	pass
 
-func idle_state():
-	move()
+func idle_state(delta: float):
+	move(delta)
 	
 	if velocity.x != 0:
 		go_to_walk_state()
@@ -117,8 +120,8 @@ func go_to_walk_state():
 	animated_sprite_2d.play("walk")
 	pass
 	
-func walk_state():
-	move()
+func walk_state(delta: float):
+	move(delta)
 	
 	if velocity.x == 0:
 		go_to_idle_state()
@@ -129,7 +132,7 @@ func walk_state():
 		return	
 		
 	if not is_on_floor():
-		jump_count += 1
+		jump_count += 1 # one extra jump when falling
 		go_to_fall_state()	
 		return			
 	pass
@@ -143,8 +146,8 @@ func go_to_jump_state():
 	jump_count += 1
 	pass
 		
-func jump_state():
-	move()
+func jump_state(delta: float):
+	move(delta)
 	
 	if Input.is_action_just_pressed("jump") && can_jump_again():
 		go_to_jump_state()
@@ -161,8 +164,8 @@ func go_to_fall_state():
 	animated_sprite_2d.play("fall")
 	pass
 
-func fall_state():
-	move()
+func fall_state(delta: float):
+	move(delta)
 	
 	if Input.is_action_just_pressed("jump") && can_jump_again():
 		go_to_jump_state()
@@ -242,9 +245,9 @@ func _physics_process_v1(delta: float) -> void:
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("left", "right")
 	if direction:
-		velocity.x = direction * SPEED
+		velocity.x = direction * max_speed
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, max_speed)
 
 
 	if is_on_floor():
