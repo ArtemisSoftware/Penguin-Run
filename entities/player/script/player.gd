@@ -17,7 +17,8 @@ enum PlayerState {
 	jump,
 	duck,
 	fall,
-	slide
+	slide,
+	dead
 }
 
 var direction = 0
@@ -55,7 +56,10 @@ func _physics_process(delta: float) -> void:
 			fall_state(delta)	
 			
 		PlayerState.slide:	
-			slide_state(delta)									
+			slide_state(delta)	
+			
+		PlayerState.dead:	
+			dead_state(delta)												
 			
 	move_and_slide()			
 	pass	
@@ -231,6 +235,17 @@ func slide_state(delta: float):
 	pass	
 
 
+func go_to_dead_state():
+	status = PlayerState.dead
+	animated_sprite_2d.play("dead")
+	update_collision_state()
+	velocity = Vector2.ZERO
+	pass
+
+func dead_state(delta: float):
+	
+	pass	
+
 
 
 #---------------------------
@@ -254,8 +269,18 @@ func update_collision(radius, height, y) -> void:
 	collision_shape_2d.position.y = y
 	pass	
 
+#---------------------------
+#Signals
+#---------------------------	
 
-
+func _on_hitbox_area_entered(area: Area2D) -> void:
+	if velocity.y > 0:
+		#kill enemy
+		area.get_parent().queue_free()
+		go_to_jump_state()
+	else:
+		go_to_dead_state()	
+	pass # Replace with function body.
 
 #------------------------------
 

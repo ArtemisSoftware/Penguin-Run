@@ -1,15 +1,25 @@
-[gd_scene load_steps=27 format=3 uid="uid://dcologspv7oid"]
+[gd_scene load_steps=32 format=3 uid="uid://dcologspv7oid"]
 
 [ext_resource type="Script" uid="uid://cfmynkew7ijrl" path="res://entities/player/script/player.gd" id="1_8xc6n"]
 [ext_resource type="Texture2D" uid="uid://d80s5be81qiu" path="res://entities/player/sprites/Idle (16 x 16).png" id="2_5gr5v"]
 [ext_resource type="Texture2D" uid="uid://8jcitexpnrdj" path="res://entities/player/sprites/Ducking (16 x 16).png" id="2_c8uo4"]
+[ext_resource type="Texture2D" uid="uid://krt7bhkv1upd" path="res://entities/player/sprites/Hurt (16 x 16).png" id="2_tpjdx"]
 [ext_resource type="Texture2D" uid="uid://byp66kv88d4lg" path="res://entities/player/sprites/Falling (16 x 16).png" id="3_c8uo4"]
 [ext_resource type="Texture2D" uid="uid://shfkr5jcc8ve" path="res://entities/player/sprites/Jump (16 x 16).png" id="3_qhr48"]
+[ext_resource type="Texture2D" uid="uid://1jacvudriplf" path="res://entities/player/sprites/Lying_On_Ground (16 x 16).png" id="3_w1ewg"]
 [ext_resource type="Texture2D" uid="uid://2psingk3ik1e" path="res://entities/player/sprites/Belly_Sliding (16 x 16).png" id="6_8ivne"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8sbyw"]
 radius = 6.0
 height = 16.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c0821"]
+atlas = ExtResource("2_tpjdx")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_864cw"]
+atlas = ExtResource("3_w1ewg")
+region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i0l08"]
 atlas = ExtResource("2_c8uo4")
@@ -84,6 +94,17 @@ region = Rect2(80, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tpjdx"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c0821")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_864cw")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 2.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_i0l08")
@@ -166,17 +187,30 @@ animations = [{
 "speed": 7.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_focbt"]
+size = Vector2(12, 15)
+
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 2
 collision_mask = 9
 script = ExtResource("1_8xc6n")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CapsuleShape2D_8sbyw")
 debug_color = Color(0, 0.616408, 0.718913, 0.42)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_tpjdx")
-animation = &"slide"
+animation = &"dead"
 autoplay = "idle"
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_focbt")
+debug_color = Color(0.933863, 0.158413, 0.510077, 0.42)
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

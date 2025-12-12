@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://cq1mjiy12vtm0"]
+
+[ext_resource type="Script" uid="uid://c82menc1sci3x" path="res://entities/enemies/skeleton/script/skeleton.gd" id="1_cmnyb"]
+[ext_resource type="Texture2D" uid="uid://di8urwh7o8sfo" path="res://entities/enemies/skeleton/sprites/Standing (32 x 32).png" id="1_wacom"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cmnyb"]
+atlas = ExtResource("1_wacom")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rquuy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cmnyb")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0f5vj"]
+radius = 8.0
+height = 26.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rquuy"]
+size = Vector2(12, 26)
+
+[node name="Skeleton" type="CharacterBody2D"]
+collision_layer = 4
+script = ExtResource("1_cmnyb")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_rquuy")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(1, 3)
+shape = SubResource("CapsuleShape2D_0f5vj")
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(2, 3)
+shape = SubResource("RectangleShape2D_rquuy")
+debug_color = Color(0.920769, 0.156616, 0.579119, 0.42)
