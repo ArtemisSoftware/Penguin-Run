@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://de1bubjia7od1"]
+[gd_scene load_steps=18 format=4 uid="uid://de1bubjia7od1"]
 
 [ext_resource type="TileSet" uid="uid://3bdwn3p3luad" path="res://world/tiles/terrain.tres" id="1_wyowp"]
 [ext_resource type="Texture2D" uid="uid://7uqqnx606kxa" path="res://world/sprites/autumnforest/Terrain (16 x 16).png" id="2_40vnh"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://dbih18ra0omom" path="res://entities/camera/camera.tscn" id="9_s26ds"]
 [ext_resource type="PackedScene" uid="uid://ollatikgsa1n" path="res://entities/levelend/level_end.tscn" id="12_o7hvc"]
 [ext_resource type="PackedScene" uid="uid://cq1mjiy12vtm0" path="res://entities/enemies/skeleton/scene/skeleton.tscn" id="13_h3h2a"]
+[ext_resource type="PackedScene" uid="uid://cmqw648lionpo" path="res://entities/enemies/skeleton/scene/spinning_bone.tscn" id="14_yde45"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ppcon"]
 texture = ExtResource("2_40vnh")
@@ -166,5 +167,8 @@ position = Vector2(217, 174)
 
 [node name="Skeleton2" parent="." instance=ExtResource("13_h3h2a")]
 position = Vector2(328, 128)
+
+[node name="SpinningBone" parent="." instance=ExtResource("14_yde45")]
+position = Vector2(213, 128)
 
 [editable path="LevelEnd"]
