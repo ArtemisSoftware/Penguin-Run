@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+@onready var hitbox_collision_shape_2d: CollisionShape2D = $Hitbox/CollisionShape2D
 
 @export var max_jump_count = 2
 @export var acceleration = 400
@@ -96,7 +97,6 @@ func flip() -> void:
 
 func can_jump_again() -> bool:
 	return jump_count < max_jump_count	
-	pass		
 	
 #---------------------------
 #Movement - states
@@ -240,7 +240,7 @@ func go_to_dead_state():
 	status = PlayerState.dead
 	animated_sprite_2d.play("dead")
 	update_collision_state()
-	velocity = Vector2.ZERO
+	velocity.x = 0
 	reload_timer.start()
 	pass
 
@@ -259,9 +259,10 @@ func update_collision_state() -> void:
 	match status:			
 		PlayerState.duck, PlayerState.slide:	
 			update_collision(5, 10, 3)
-				
+			update_hitbox_collision(10, 3)
 		_:
-			update_collision(6, 16, 0)			
+			update_collision(6, 16, 0)	
+			update_hitbox_collision(15, 0.5)			
 	pass	
 	
 	
@@ -270,21 +271,24 @@ func update_collision(radius, height, y) -> void:
 	collision_shape_2d.shape.height = height
 	collision_shape_2d.position.y = y
 	pass	
+	
+func update_hitbox_collision(size, y) -> void:
+	hitbox_collision_shape_2d.shape.size.y = size
+	hitbox_collision_shape_2d.position.y = y
+	pass		
 
 #---------------------------
 #Signals
 #---------------------------	
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
-	if velocity.y > 0:
-		#kill enemy
-		#area.get_parent().queue_free()
-		area.get_parent().take_damage()
-		go_to_jump_state()
-	else:
-		
-		if status != PlayerState.dead:
-			go_to_dead_state()	
+	
+	
+	if area.is_in_group("Enemies"):
+		hit_enemy(area)
+	elif area.is_in_group("LethalArea"):	
+		hit_lethal_area()
+	
 	pass # Replace with function body.
 
 
@@ -294,8 +298,24 @@ func _on_reload_timer_timeout() -> void:
 	pass # Replace with function body.
 
 #------------------------------
+#Hit
+#---------------------------	
 
-
+func hit_enemy(area: Area2D):
+	if velocity.y > 0:
+		#kill enemy
+		#area.get_parent().queue_free()
+		area.get_parent().take_damage()
+		go_to_jump_state()
+	else:
+		
+		if status != PlayerState.dead:
+			go_to_dead_state()		
+	pass
+	
+func hit_lethal_area():
+	go_to_dead_state()
+	pass	
 
 
 #func _physics_process_v1(delta: float) -> void:

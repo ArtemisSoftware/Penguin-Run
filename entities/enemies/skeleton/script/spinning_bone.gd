@@ -16,7 +16,25 @@ func _process(delta: float) -> void:
 	position.x += speed * direction * delta 
 	pass
 	
-func set_direction(direction):
-	self.direction = direction
-	animated_sprite_2d.flip_h = direction < 0 
+func set_direction(skeleton_direction):
+	self.direction = skeleton_direction
+	animated_sprite_2d.flip_h = skeleton_direction < 0 
 	pass	
+
+#---------------------------
+#Signals
+#------------------------
+
+func _on_self_destruct_timer_timeout() -> void:
+	queue_free()
+	pass # Replace with function body.
+
+
+func _on_area_entered(_area: Area2D) -> void:
+	queue_free()
+	pass # Replace with function body.
+
+
+func _on_body_entered(_body: Node2D) -> void:
+	queue_free()
+	pass # Replace with function body.
