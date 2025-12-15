@@ -8,6 +8,7 @@ extends CharacterBody2D
 @export var deceleration = 400
 @export var max_speed = 100.0
 @export var slide_deceleration = 100
+@onready var reload_timer: Timer = $ReloadTimer
 
 const JUMP_VELOCITY = -300.0
 
@@ -240,9 +241,10 @@ func go_to_dead_state():
 	animated_sprite_2d.play("dead")
 	update_collision_state()
 	velocity = Vector2.ZERO
+	reload_timer.start()
 	pass
 
-func dead_state(delta: float):
+func dead_state(_delta: float):
 	
 	pass	
 
@@ -280,8 +282,15 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 		area.get_parent().take_damage()
 		go_to_jump_state()
 	else:
-		#player dies
-		go_to_dead_state()	
+		
+		if status != PlayerState.dead:
+			go_to_dead_state()	
+	pass # Replace with function body.
+
+
+
+func _on_reload_timer_timeout() -> void:
+	get_tree().reload_current_scene()
 	pass # Replace with function body.
 
 #------------------------------

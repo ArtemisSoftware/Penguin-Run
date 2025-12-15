@@ -78,9 +78,6 @@ tile_set = SubResource("TileSet_o7hvc")
 tile_map_data = PackedByteArray("AAAbAAoAAQABAAAAAAAcAAoAAQACAAAAAAAdAAoAAQADAAAAAAAtAAsAAAADAAUAAAA=")
 tile_set = ExtResource("3_ppcon")
 
-[node name="Skeleton" parent="TileMaps" instance=ExtResource("13_h3h2a")]
-position = Vector2(328, 128)
-
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
 [node name="ParallaxLayer - 6 Distant trees" type="ParallaxLayer" parent="ParallaxBackground"]
@@ -166,5 +163,8 @@ shape = SubResource("RectangleShape2D_o7hvc")
 
 [node name="Skeleton" parent="." instance=ExtResource("13_h3h2a")]
 position = Vector2(217, 174)
+
+[node name="Skeleton2" parent="." instance=ExtResource("13_h3h2a")]
+position = Vector2(328, 128)
 
 [editable path="LevelEnd"]
