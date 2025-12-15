@@ -237,6 +237,9 @@ func slide_state(delta: float):
 
 
 func go_to_dead_state():
+	if status == PlayerState.dead:
+		return 
+		
 	status = PlayerState.dead
 	animated_sprite_2d.play("dead")
 	update_collision_state()
@@ -283,7 +286,6 @@ func update_hitbox_collision(size, y) -> void:
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
 	
-	
 	if area.is_in_group("Enemies"):
 		hit_enemy(area)
 	elif area.is_in_group("LethalArea"):	
@@ -297,6 +299,13 @@ func _on_reload_timer_timeout() -> void:
 	get_tree().reload_current_scene()
 	pass # Replace with function body.
 
+
+func _on_hitbox_body_entered(body: Node2D) -> void:
+	if body.is_in_group("LethalArea"):	
+		hit_lethal_area()
+	pass # Replace with function body.
+
+
 #------------------------------
 #Hit
 #---------------------------	
@@ -308,9 +317,7 @@ func hit_enemy(area: Area2D):
 		area.get_parent().take_damage()
 		go_to_jump_state()
 	else:
-		
-		if status != PlayerState.dead:
-			go_to_dead_state()		
+		go_to_dead_state()		
 	pass
 	
 func hit_lethal_area():
