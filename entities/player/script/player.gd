@@ -220,7 +220,7 @@ func fall_state(delta: float):
 		return
 		
 
-	if left_wall_detector.is_colliding() or right_wall_detector.is_colliding():
+	if (left_wall_detector.is_colliding() or right_wall_detector.is_colliding()) && is_on_wall():
 		go_to_wall_slide_state()		
 		return
 		
