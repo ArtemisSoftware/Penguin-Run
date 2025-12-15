@@ -1,5 +1,7 @@
 extends Area2D
 
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+
 
 var speed = 60
 var direction = 1
@@ -13,3 +15,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	position.x += speed * direction * delta 
 	pass
+	
+func set_direction(direction):
+	self.direction = direction
+	animated_sprite_2d.flip_h = direction < 0 
+	pass	
