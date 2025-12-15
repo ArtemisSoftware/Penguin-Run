@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://dcologspv7oid"]
+[gd_scene load_steps=37 format=3 uid="uid://dcologspv7oid"]
 
 [ext_resource type="Script" uid="uid://cfmynkew7ijrl" path="res://entities/player/script/player.gd" id="1_8xc6n"]
 [ext_resource type="Texture2D" uid="uid://d80s5be81qiu" path="res://entities/player/sprites/Idle (16 x 16).png" id="2_5gr5v"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://shfkr5jcc8ve" path="res://entities/player/sprites/Jump (16 x 16).png" id="3_qhr48"]
 [ext_resource type="Texture2D" uid="uid://1jacvudriplf" path="res://entities/player/sprites/Lying_On_Ground (16 x 16).png" id="3_w1ewg"]
 [ext_resource type="Texture2D" uid="uid://2psingk3ik1e" path="res://entities/player/sprites/Belly_Sliding (16 x 16).png" id="6_8ivne"]
+[ext_resource type="Texture2D" uid="uid://xs1om4dja1e0" path="res://entities/player/sprites/Wall_Slide (16x16).png" id="9_w1ewg"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8sbyw"]
 radius = 6.0
@@ -91,6 +92,22 @@ region = Rect2(64, 0, 16, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_vwqy1"]
 atlas = SubResource("CompressedTexture2D_qhr48")
 region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_focbt"]
+atlas = ExtResource("9_w1ewg")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ptkv0"]
+atlas = ExtResource("9_w1ewg")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wkl3h"]
+atlas = ExtResource("9_w1ewg")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_imh8g"]
+atlas = ExtResource("9_w1ewg")
+region = Rect2(48, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tpjdx"]
 animations = [{
@@ -185,6 +202,23 @@ animations = [{
 "loop": true,
 "name": &"walk",
 "speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_focbt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ptkv0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wkl3h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_imh8g")
+}],
+"loop": true,
+"name": &"wall_slide",
+"speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_focbt"]
@@ -203,7 +237,7 @@ debug_color = Color(0, 0.616408, 0.718913, 0.42)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_tpjdx")
-animation = &"dead"
+animation = &"idle"
 autoplay = "idle"
 
 [node name="Hitbox" type="Area2D" parent="."]
@@ -217,6 +251,12 @@ debug_color = Color(0.933863, 0.158413, 0.510077, 0.42)
 
 [node name="ReloadTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="LeftWallDetector" type="RayCast2D" parent="."]
+target_position = Vector2(-7, 0)
+
+[node name="RightWallDetector" type="RayCast2D" parent="."]
+target_position = Vector2(7, 0)
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
