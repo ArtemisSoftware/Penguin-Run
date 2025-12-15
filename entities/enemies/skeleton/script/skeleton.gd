@@ -63,7 +63,10 @@ func go_to_walk_state():
 	
 func walk_state(delta: float):
 	
-	velocity.x = SPEED * direction
+	if animated_sprite_2d.frame == 3 or animated_sprite_2d.frame == 4:
+		velocity.x = SPEED * direction
+	else:
+		velocity.x = 0
 	
 	if wall_detector.is_colliding():
 		scale.x *= -1

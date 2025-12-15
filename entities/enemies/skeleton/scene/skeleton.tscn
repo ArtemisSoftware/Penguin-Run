@@ -157,14 +157,13 @@ height = 26.0
 size = Vector2(12, 26)
 
 [node name="Skeleton" type="CharacterBody2D"]
+position = Vector2(0, 0.1)
 collision_layer = 4
 script = ExtResource("1_cmnyb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rquuy")
-animation = &"attack"
-frame = 2
-frame_progress = 0.716625
+animation = &"walk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
