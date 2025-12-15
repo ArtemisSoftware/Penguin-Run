@@ -62,7 +62,7 @@ sources/0 = SubResource("TileSetAtlasSource_ppcon")
 size = Vector2(20, 106)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yde45"]
-size = Vector2(20, 221)
+size = Vector2(23, 221)
 
 [node name="Forest" type="Node2D"]
 metadata/_edit_vertical_guides_ = [750.0]
@@ -179,9 +179,10 @@ position = Vector2(380, 80)
 position = Vector2(328, 128)
 
 [node name="Limit" type="StaticBody2D" parent="."]
+collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Limit"]
-position = Vector2(-11, 100)
+position = Vector2(-9.5, 100)
 shape = SubResource("RectangleShape2D_yde45")
 
 [editable path="LevelEnd"]
