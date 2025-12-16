@@ -268,6 +268,7 @@ size = Vector2(12, 15)
 collision_layer = 2
 collision_mask = 9
 script = ExtResource("1_8xc6n")
+swim_style = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -279,7 +280,7 @@ z_index = 1
 sprite_frames = SubResource("SpriteFrames_tpjdx")
 animation = &"swim"
 autoplay = "idle"
-frame_progress = 0.9631235
+frame_progress = 0.062836155
 
 [node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 2

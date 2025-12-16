@@ -16,9 +16,18 @@ extends CharacterBody2D
 @export var slide_deceleration = 100
 @export var wall_acceleration = 40
 @export var wall_jump_velocity = 140
+
+@export_group("Swimming")
 @export var water_max_speed = 100
 @export var water_acceleration = 200
 @export var water_imersion_speed = 125
+enum SwimStyle {
+	PENGUIN = 1,
+	MARIO = 2
+}
+@export var swim_style: SwimStyle = SwimStyle.PENGUIN
+
+
 const JUMP_VELOCITY = -300.0
 
 
@@ -143,12 +152,33 @@ func swim_movement(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, water_acceleration * delta) 	
 		
+	
+	match swim_style:
+		SwimStyle.MARIO:
+			swim_style_2(delta)
+		_:
+			swim_style_1(delta)	
+
+	pass
+
+func swim_style_1(delta: float) -> void:
 	var vertical_direction = Input.get_axis("jump","duck")
 	
 	if vertical_direction:
 		velocity.y = move_toward(velocity.y, water_max_speed * vertical_direction, water_acceleration * delta)	
 	else:
 		velocity.y = move_toward(velocity.y, 0, water_acceleration * delta) 				
+			
+	pass
+	
+## Mario swimming style
+func swim_style_2(delta: float) -> void:
+	
+	velocity.y += water_acceleration * delta
+	velocity.y = min(velocity.y, water_max_speed)
+	
+	if Input.is_action_just_pressed("jump"):
+		velocity.y = -100		
 	pass
 	
 #---------------------------
