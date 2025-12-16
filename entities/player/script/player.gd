@@ -16,8 +16,11 @@ extends CharacterBody2D
 @export var slide_deceleration = 100
 @export var wall_acceleration = 40
 @export var wall_jump_velocity = 140
-
+@export var water_max_speed = 100
+@export var water_acceleration = 200
+@export var water_imersion_speed = 125
 const JUMP_VELOCITY = -300.0
+
 
 enum PlayerState {
 	idle,
@@ -87,12 +90,17 @@ func move(delta: float):
 	
 	flip()
 	
-	if direction:
-		velocity.x = move_toward(velocity.x, direction * max_speed, acceleration * delta)	
-		#velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, deceleration * delta)		
-	
+	match status:
+		
+		PlayerState.swim:
+			swim_movement(delta)
+		
+		_:
+			if direction:
+				velocity.x = move_toward(velocity.x, direction * max_speed, acceleration * delta)	
+				#velocity.x = direction * SPEED
+			else:
+				velocity.x = move_toward(velocity.x, 0, deceleration * delta)		
 	pass
 	
 
@@ -118,13 +126,30 @@ func apply_gravity(delta: float) -> void:
 	if not is_on_floor():
 		
 		match status:	
+			
+			PlayerState.swim:
+				return
+			
 			PlayerState.wall_slide:
 				velocity += Vector2(0, wall_acceleration * delta)
 				#velocity.y += wall_acceleration * delta 
 			_:
 				velocity += get_gravity() * delta	
 	pass
+	
+func swim_movement(delta: float) -> void:
+	if direction:
+		velocity.x = move_toward(velocity.x, water_max_speed * direction, water_acceleration * delta) 	
+	else:
+		velocity.x = move_toward(velocity.x, 0, water_acceleration * delta) 	
 		
+	var vertical_direction = Input.get_axis("jump","duck")
+	
+	if vertical_direction:
+		velocity.y = move_toward(velocity.y, water_max_speed * vertical_direction, water_acceleration * delta)	
+	else:
+		velocity.y = move_toward(velocity.y, 0, water_acceleration * delta) 				
+	pass
 	
 #---------------------------
 #Movement - states
@@ -266,14 +291,12 @@ func slide_state(delta: float):
 	pass	
 
 func go_to_wall_slide_state():
-
 	status = PlayerState.wall_slide
 	animated_sprite_2d.play("wall_slide")
 	jump_count = 0
 	pass
 
-
-func wall_slide_state(delta: float):
+func wall_slide_state(_delta: float):
 	
 	if left_wall_detector.is_colliding():
 		animated_sprite_2d.flip_h = false
@@ -301,9 +324,11 @@ func go_to_swim_state():
 	status = PlayerState.swim
 	animated_sprite_2d.play("swim")
 	update_collision_state()
+	velocity.y = min(velocity.y, water_imersion_speed)
 	pass
 
-func swim_state(_delta: float):
+func swim_state(delta: float):
+	move(delta)
 	pass
 	
 func go_to_dead_state():
@@ -318,7 +343,6 @@ func go_to_dead_state():
 	pass
 
 func dead_state(_delta: float):
-	
 	pass	
 
 
@@ -375,6 +399,13 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 		hit_lethal_area()
 	elif body.is_in_group("Water"):	
 		go_to_swim_state()	
+	pass # Replace with function body.
+
+
+func _on_hitbox_body_exited(body: Node2D) -> void:
+	if body.is_in_group("Water"):
+		jump_count = 0
+		go_to_jump_state()
 	pass # Replace with function body.
 
 
