@@ -27,6 +27,7 @@ enum PlayerState {
 	fall,
 	slide,
 	wall_slide,
+	swim,
 	dead
 }
 
@@ -66,7 +67,10 @@ func _physics_process(delta: float) -> void:
 			slide_state(delta)	
 			
 		PlayerState.wall_slide:	
-			wall_slide_state(delta)				
+			wall_slide_state(delta)		
+			
+		PlayerState.swim:	
+			swim_state(delta)							
 			
 		PlayerState.dead:	
 			dead_state(delta)												
@@ -293,7 +297,15 @@ func wall_slide_state(delta: float):
 	
 	pass	
 
+func go_to_swim_state():
+	status = PlayerState.swim
+	animated_sprite_2d.play("swim")
+	update_collision_state()
+	pass
 
+func swim_state(_delta: float):
+	pass
+	
 func go_to_dead_state():
 	if status == PlayerState.dead:
 		return 
@@ -361,6 +373,8 @@ func _on_reload_timer_timeout() -> void:
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("LethalArea"):	
 		hit_lethal_area()
+	elif body.is_in_group("Water"):	
+		go_to_swim_state()	
 	pass # Replace with function body.
 
 
