@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://bcilvxj52r6g7"]
+[gd_scene load_steps=18 format=4 uid="uid://bcilvxj52r6g7"]
 
 [ext_resource type="PackedScene" uid="uid://dcologspv7oid" path="res://entities/player/scene/player.tscn" id="1_yprh5"]
 [ext_resource type="TileSet" uid="uid://3bdwn3p3luad" path="res://world/tiles/terrain.tres" id="2_saaw4"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://cecswi88bjta1" path="res://world/sprites/tropic/Background parts/distant-water.png" id="9_v2qjn"]
 [ext_resource type="PackedScene" uid="uid://ollatikgsa1n" path="res://entities/levelend/level_end.tscn" id="10_48ntt"]
 [ext_resource type="PackedScene" uid="uid://cq1mjiy12vtm0" path="res://entities/enemies/skeleton/scene/skeleton.tscn" id="11_tkbia"]
+[ext_resource type="PackedScene" uid="uid://rg248ux2kr46" path="res://entities/platform/movingplatform/moving_platform.tscn" id="14_5clnx"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_v2qjn"]
 animations = [{
@@ -141,4 +142,19 @@ collision_mask = 6
 position = Vector2(-9.5, 100)
 shape = SubResource("RectangleShape2D_tkbia")
 
+[node name="MovingPlatform" parent="." instance=ExtResource("14_5clnx")]
+position = Vector2(72, 155)
+
+[node name="Target" parent="MovingPlatform" index="1"]
+position = Vector2(0, -50)
+
+[node name="MovingPlatform2" parent="." instance=ExtResource("14_5clnx")]
+position = Vector2(332, 49)
+moving_time = 4
+
+[node name="Target" parent="MovingPlatform2" index="1"]
+position = Vector2(118, -90)
+
 [editable path="LevelEnd"]
+[editable path="MovingPlatform"]
+[editable path="MovingPlatform2"]

@@ -20,7 +20,7 @@ extends CharacterBody2D
 @export_group("Swimming")
 @export var water_max_speed = 100
 @export var water_acceleration = 200
-@export var water_imersion_speed = 125
+@export var water_jump_force = 125
 enum SwimStyle {
 	PENGUIN = 1,
 	MARIO = 2
@@ -178,7 +178,7 @@ func swim_style_2(delta: float) -> void:
 	velocity.y = min(velocity.y, water_max_speed)
 	
 	if Input.is_action_just_pressed("jump"):
-		velocity.y = -100		
+		velocity.y = -1 * water_jump_force	
 	pass
 	
 #---------------------------
@@ -354,7 +354,7 @@ func go_to_swim_state():
 	status = PlayerState.swim
 	animated_sprite_2d.play("swim")
 	update_collision_state()
-	velocity.y = min(velocity.y, water_imersion_speed)
+	velocity.y = min(velocity.y, water_jump_force)
 	pass
 
 func swim_state(delta: float):
