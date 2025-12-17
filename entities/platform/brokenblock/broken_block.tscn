@@ -1,0 +1,79 @@
+[gd_scene load_steps=9 format=3 uid="uid://cdvqum8jflmmc"]
+
+[ext_resource type="Script" uid="uid://cole3oxhvtr66" path="res://entities/platform/brokenblock/broken_block.gd" id="1_3kmxj"]
+[ext_resource type="Texture2D" uid="uid://njf8pn5cy0nd" path="res://entities/platform/sprites/Blocks (16 x 16).png" id="1_24nkm"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3kmxj"]
+atlas = ExtResource("1_24nkm")
+region = Rect2(64, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wwukb"]
+atlas = ExtResource("1_24nkm")
+region = Rect2(48, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ig8y1"]
+atlas = ExtResource("1_24nkm")
+region = Rect2(80, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kftnt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3kmxj")
+}],
+"loop": true,
+"name": &"broken",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wwukb")
+}],
+"loop": true,
+"name": &"complete",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ig8y1")
+}],
+"loop": true,
+"name": &"falling",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dkjv5"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wwukb"]
+size = Vector2(16, 2)
+
+[node name="BrokenBlock" type="StaticBody2D"]
+collision_mask = 2
+script = ExtResource("1_3kmxj")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_kftnt")
+animation = &"complete"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_dkjv5")
+one_way_collision = true
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -9)
+shape = SubResource("RectangleShape2D_wwukb")
+debug_color = Color(2.8878452e-07, 0.62178904, 0.5514749, 0.41960785)
+
+[node name="BrokenTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ResetTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[connection signal="timeout" from="BrokenTimer" to="." method="_on_broken_timer_timeout"]
+[connection signal="timeout" from="ResetTimer" to="." method="_on_reset_timer_timeout"]

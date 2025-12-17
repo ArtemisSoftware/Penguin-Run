@@ -193,17 +193,17 @@ func go_to_idle_state():
 func idle_state(delta: float):
 	move(delta)
 	
-	if velocity.x != 0:
-		go_to_walk_state()
-		return
-		
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		go_to_jump_state()
+		return		
+
 	if Input.is_action_pressed("duck") and is_on_floor():
 		go_to_duck_state()
 		return		
 		
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		go_to_jump_state()
-		return	
+	if velocity.x != 0:
+		go_to_walk_state()
+		return
 	pass
 
 
